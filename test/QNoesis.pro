@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui widgets opengl network macextras
+QT       += core gui widgets opengl network
 
 lessThan(QT_VERSION, 5.4): error("Qt version must be greater or equal to 5.4")
 
@@ -12,7 +12,7 @@ TARGET = QNoesis
 TEMPLATE = app
 CONFIG += c++14
 
-isEmpty(NOESIS_SDK_DIR): error("Noesis SDK path not specified")
+isEmpty(NOESIS_SDK_DIR): error("NoesisGUI SDK path not specified")
 INCLUDEPATH += "$${NOESIS_SDK_DIR}"
 INCLUDEPATH += "$${NOESIS_SDK_DIR}/Include"
 DEPENDPATH += "$${NOESIS_SDK_DIR}/Include"
@@ -22,25 +22,14 @@ INCLUDEPATH += "../src"
 SOURCES += main.cpp   \
     mainwindow.cpp \
     ../src/qnoesiswidget.cpp \
-    ../src/qnsrenderdevice.cpp
+    ../src/qnsrenderdevice.cpp \
+    "$${NOESIS_SDK_DIR}/Src/Renderers/GL/GLRenderDevice.cpp"
 
 HEADERS  += \
     mainwindow.h \
     ../src/qnoesisapplication.h \
     ../src/qnoesiswidget.h \
     ../src/qnsrenderdevice.h
-
-win32 {
-    #SOURCES += "$${NOESIS_SDK_DIR}/Src/Renderers/GL/GLRenderDevice.cpp"
-}
-macx {
-    #OBJECTIVE_SOURCES += "../src/metal/qmtlrenderdevice.mm"
-    OBJECTIVE_SOURCES += "$${NOESIS_SDK_DIR}/Src/Renderers/GL/GLRenderDevice.cpp"
-
-    #HEADERS += "../src/metal/qmtlrenderdevice.h"
-    #OBJECTIVE_HEADERS += "$${NOESIS_SDK_DIR}/Src/Renderers/Metal/MTLRenderDevice.h"
-}
-
 
 
 QMAKE_CXXFLAGS += -F$$(HOME)/Library/Frameworks
@@ -53,9 +42,8 @@ else:macx {
     LIBS += "$${NOESIS_SDK_DIR}/Bin/osx/Noesis.dylib"
     QMAKE_RPATHDIR += "$${NOESIS_SDK_DIR}/Bin/osx/"
     #LIBS += -framework OpenGL.framework
-
 }
-else:ios: LIBS += -L"$${NOESIS_SDK_DIR}/Lib/ios/" -lNoesis
+#else:ios: LIBS += -L"$${NOESIS_SDK_DIR}/Lib/ios/" -lNoesis
 
 
 
