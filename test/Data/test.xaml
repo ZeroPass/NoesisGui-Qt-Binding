@@ -1,0 +1,101 @@
+﻿<UserControl
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d"
+
+	x:Name="UserControl"
+	d:DesignWidth="640" d:DesignHeight="480">
+	<UserControl.Resources>
+		<Storyboard x:Key="stackAnimationNext">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="stack1">
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="-642">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<BackEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="stack1">
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="1.5">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<BackEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="stack2">
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="-640.5">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<BackEase EasingMode="EaseOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+		<Storyboard x:Key="stackAnimationBack">
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="stack1">
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<BackEase EasingMode="EaseInOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)" Storyboard.TargetName="stack1">
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<BackEase EasingMode="EaseInOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="stack2">
+				<EasingDoubleKeyFrame KeyTime="0:0:1" Value="0">
+					<EasingDoubleKeyFrame.EasingFunction>
+						<BackEase EasingMode="EaseInOut"/>
+					</EasingDoubleKeyFrame.EasingFunction>
+				</EasingDoubleKeyFrame>
+			</DoubleAnimationUsingKeyFrames>
+		</Storyboard>
+	</UserControl.Resources>
+	<Viewbox MinWidth="320">
+		<StackPanel x:Name="stackPanel" Orientation="Horizontal" Height="480" Width="640">
+			<StackPanel x:Name="stack1" Width="640" RenderTransformOrigin="0.5,0.5">
+				<StackPanel.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform/>
+						<SkewTransform/>
+						<RotateTransform/>
+						<TranslateTransform/>
+					</TransformGroup>
+				</StackPanel.RenderTransform>
+				<StackPanel.Background>
+					<LinearGradientBrush EndPoint="0.933,0.112" StartPoint="0.002,0.984">
+						<GradientStop Color="Black" Offset="0"/>
+						<GradientStop Color="#FF4422B6" Offset="1"/>
+					</LinearGradientBrush>
+				</StackPanel.Background>
+				<Button x:Name="buttonNext" Content="Next&#xD;&#xA;" Height="61.5" Margin="210,150,210,17"  FontSize="21.333" Focusable="False" HorizontalContentAlignment="Center" VerticalContentAlignment="Bottom" Padding="1,1,1,-5" ScrollViewer.VerticalScrollBarVisibility="Hidden"/>
+				<Button x:Name="buttonExit" Content="Exit&#xD;&#xA;" Height="61.5" Margin="210,0"  FontSize="21.333" Focusable="False" VerticalContentAlignment="Bottom" Padding="1,1,1,-5"/>
+			</StackPanel>
+			<StackPanel x:Name="stack2" Width="640" RenderTransformOrigin="0.5,0.5">
+				<StackPanel.RenderTransform>
+					<TransformGroup>
+						<ScaleTransform/>
+						<SkewTransform/>
+						<RotateTransform/>
+						<TranslateTransform/>
+					</TransformGroup>
+				</StackPanel.RenderTransform>
+				<StackPanel.Background>
+					<LinearGradientBrush EndPoint="0.174,0.194" StartPoint="0.976,0.962">
+						<GradientStop Color="Black" Offset="0"/>
+						<GradientStop Color="#FF0CB468" Offset="1"/>
+					</LinearGradientBrush>
+				</StackPanel.Background>
+				<Button x:Name="buttonBack" Content="Back" Height="61.5" Margin="210,150,210,47"  Focusable="False" VerticalContentAlignment="Center" Padding="1" FontSize="21.333" Width="220"/>
+				<StackPanel Margin="41,0,76,0" Orientation="Horizontal">
+					<Button x:Name="buttonIpAddr" Content="My IP" HorizontalAlignment="Left" Focusable="False" Height="47" Margin="17.5,0,7,0"  VerticalContentAlignment="Center" Padding="1" FontSize="21.333" Width="143"/>
+					<TextBox x:Name="textBoxIpAddr" Height="47" TextWrapping="Wrap" Width="256.5"  FontSize="24" Text="N/A" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Padding="20,11,10,10" AllowDrop="False" Focusable="False" IsHitTestVisible="False" IsTabStop="False" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</StackPanel>
+			</StackPanel>
+		</StackPanel>
+	</Viewbox>
+</UserControl>
