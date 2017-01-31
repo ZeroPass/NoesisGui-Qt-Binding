@@ -3,4 +3,4 @@
 
 **Known issues:** QNoesisWidget might flick when resizing and app might crash while closing if more than one QNoesisWidget was created.
 
-Pull request wellcome.
+Pull request are wellcomed.
