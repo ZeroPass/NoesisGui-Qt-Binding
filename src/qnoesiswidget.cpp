@@ -1,19 +1,23 @@
 #include "qnoesiswidget.h"
 #include "qnsrenderdevice.h"
+#include "qnoesisapplication.h"
 
+#include <QTimer>
+
+using namespace Noesis;
 using namespace Noesis::GUI;
 using namespace Noesis::Render;
 
 
 QNoesisWidget::QNoesisWidget(QWidget* parent) :
-    QNoesisWidget(Noesis::Core::Ptr<Noesis::IView>(), parent)
+    QNoesisWidget(Ptr<IView>(), parent)
 {}
 
-QNoesisWidget::QNoesisWidget(Noesis::FrameworkElement* content, QWidget* parent) :
+QNoesisWidget::QNoesisWidget(FrameworkElement* content, QWidget* parent) :
     QNoesisWidget(CreateView(content), parent)
 {}
 
-QNoesisWidget::QNoesisWidget(const Noesis::Core::Ptr<Noesis::IView>& view, QWidget* parent) :
+QNoesisWidget::QNoesisWidget(const Ptr<IView>& view, QWidget* parent) :
     QOpenGLWidget(parent)
 {
     setMouseTracking(true);
@@ -28,12 +32,7 @@ QNoesisWidget::QNoesisWidget(const Noesis::Core::Ptr<Noesis::IView>& view, QWidg
     m_renderThread = new QThread;
     m_renderer = new Renderer(this);
     m_renderer->moveToThread(m_renderThread);
-    connect(m_renderThread, &QThread::finished, [this](){
-#ifdef Q_OS_MAC
-        m_view.Reset();
-#endif
-        m_renderer->deleteLater();
-    });
+    connect(m_renderThread, &QThread::finished, m_renderer, &QNoesisWidget::deleteLater);
 
     connect(m_renderer, &Renderer::updateViewAndReleaseCtx, this, &QNoesisWidget::onUpdateViewAndReleaseCtx);
 
@@ -49,6 +48,21 @@ QNoesisWidget::~QNoesisWidget()
     m_renderThread->wait();
 
     delete m_renderThread;
+
+    /* Delete m_view */
+    // TODO: improve code below!
+    // Note: m_view's pointer has to be deleted after QOpenGlContex has been deleted
+    QTimer* t = new QTimer;
+    t->setSingleShot(true);
+
+    connect(t, &QTimer::timeout, [t, v = m_view]() mutable {
+        v.Reset(); // QOpenGlCntext should be deleted by now!
+        t->deleteLater();
+    });
+
+    // Start timer
+    // 1s interval, ensures that QOpenGlContext is deleted before m_view
+    t->start(1000);
 }
 
 void QNoesisWidget::setView(const Noesis::Core::Ptr<Noesis::IView>& view)
@@ -106,6 +120,7 @@ void QNoesisWidget::onUpdateViewAndReleaseCtx(qreal timeInSeconds)
     m_renderer->lockRenderer();
     QMutexLocker lock(m_renderer->grabCtxMutex());
     if (m_view) {
+        m_view->SetSize(this->width(), this->height());
         m_view->Update(timeInSeconds);
     }
 
@@ -184,15 +199,6 @@ void QNoesisWidget::mouseMoveEvent(QMouseEvent* event)
 {
     if(m_view) {
         m_view->MouseMove(event->x(), event->y());
-    }
-}
-
-void QNoesisWidget::resizeGL(int w, int h)
-{
-    if(m_view)
-    {
-        const qreal pr = this->devicePixelRatio();
-        m_view->SetSize(w * pr, h * pr);
     }
 }
 
@@ -318,6 +324,7 @@ void Renderer::render()
         m_bInited = true;
     }
 
+       // m_view->SetSize(this->width(), this->height());
     // Apply changes to the render tree
     Noesis::IRenderer* nsRenderer = m_view->GetRenderer();
     nsRenderer->UpdateRenderTree();

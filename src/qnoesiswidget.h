@@ -14,7 +14,6 @@
 #include <NoesisGUI.h>
 
 class Renderer;
-
 class QNoesisWidget : public QOpenGLWidget
 {
     Q_OBJECT
@@ -22,16 +21,10 @@ public:
     QNoesisWidget(QWidget* parent = nullptr);
     QNoesisWidget(Noesis::FrameworkElement* content, QWidget* parent = nullptr);
     QNoesisWidget(const Noesis::Core::Ptr<Noesis::IView>& view, QWidget* parent = nullptr);
-    ~QNoesisWidget();
+    virtual ~QNoesisWidget();
 
     void setView(const Noesis::Core::Ptr<Noesis::IView>& view);
     Noesis::Core::Ptr<Noesis::IView> view() const;
-
-    void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-    void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-    void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-    void resizeGL(int w, int h) Q_DECL_OVERRIDE;
 
     Renderer* getRenderer() const;
 
@@ -40,6 +33,10 @@ signals:
 
 protected:
     void paintEvent(QPaintEvent*) Q_DECL_OVERRIDE {}
+    void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+    void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+    void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 protected slots:
     void onUpdateViewAndReleaseCtx(qreal timeInSeconds);
@@ -54,7 +51,6 @@ private:
     QThread* m_renderThread;
     Renderer* m_renderer;
     Noesis::Core::Ptr<Noesis::IView> m_view;
-
     friend class Renderer;
 };
 
